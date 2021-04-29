@@ -1,15 +1,12 @@
+@use "sass:map";
+
 @import url('./fonts.scss');
 
 $breakpoints: (
-	'xs': 360px,
-	'md': 800px,
-	'xl': 1200px,
+	'xs': 414px,
+	'md': 1024px,
+	'xl': 1366px,
 );
-
-%header {
-	font-size: 48px;
-	font-weight: 300;
-}
 
 @mixin media($minmax, $media) {
 	@each $size, $resolution in $breakpoints {
@@ -18,6 +15,17 @@ $breakpoints: (
 				@content;
 			}
 		}
+	}
+}
+
+%header {
+	font-size: 48px;
+	font-weight: 300;
+	@include media('max', 'md') {
+		font-size: 44px;
+	}
+	@include media('max', 'xs') {
+		font-size: 28px;
 	}
 }
 
@@ -30,37 +38,83 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Open Sans';
+	overflow-x: hidden;
 }
 .content-block {
 	padding: 0 300px;
+	max-width: 1600px;
+	margin: 0 auto;
+	@include media('max', 'xl') {
+		padding: 0 100px;
+	}
+	@include media('max', 'xs') {
+		padding: 0 40px;
+	}
 	.top-block {
 		padding-top: 170px;
-		max-height: 715px;
+		max-height: 650px;
+		@include media('max', 'md') {
+			padding-top: 120px;
+			max-height: initial;
+			margin-bottom: 100px;
+		}
+		@include media('max', 'xs') {
+			padding-top: 60px;
+			margin-bottom: 40px;
+		}
 		.top-block__title {
 			max-width: 480px;
+			@include media('max', 'md') {
+				max-width: initial;
+			}
 			h2 {
 				@extend %header;
 				margin: 16px 0;
 			}
 			.sub-title {
+				@include media('max', 'md') {
+					max-width: initial;
+				}
 				font-size: 18px;
 				max-width: 360px;
 			}
 		}
-		.title-image {
-			img {
-				border: 24px solid #fff;
-				border-radius: 50%;
+		.top-block__image {
+			@include media('max', 'md') {
+				order: -1;
+			}
+			.title-image {
+				@include media('max', 'md') {
+					text-align: center;
+				}
+				img {
+					@include media('max', 'md') {
+						border: none;
+					}
+					@include media('max', 'xs') {
+						width: 100%;
+					}
+					border: 24px solid #fff;
+					border-radius: 50%;
+				}
 			}
 		}
 	}
 	.header {
+		padding: 100px 0 60px;
+		@include media('max', 'xs') {
+			padding: 80px 0 40px;
+		}
 		h1 {
 			@extend %header;
 			text-transform: capitalize;
 			max-width: 735px;
 			color: white;
+			margin: 0;
 		}
+	}
+	.bottom-block {
+		padding-bottom: 170px;
 	}
 }
 
@@ -70,42 +124,95 @@ body {
 	border-radius: 16px;
 	background-color: #fff;
 	max-width: 485px;
+	margin: 16px 0;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2), 0px 0px 32px rgba(0, 0, 0, 0.2);
+	@include media('max', 'md') {
+		max-width: initial;
+		flex-wrap: wrap;
+	}
+	@include media('max', 'xs') {
+	}
 	.card-image {
 		max-width: 200px;
 		max-height: 200px;
+		@include media('max', 'xs') {
+			max-width: initial;
+			max-height: initial;
+			width: 100%;
+		}
+		img {
+			width: 100%;
+		}
+	}
+	.card-content {
+		padding: 19px 32px;
+		font-size: 15px;
+		.card-title {
+			font-size: 32px;
+		}
+		ul {
+			padding: 0;
+			padding-left: 26px;
+		}
 	}
 }
 
-.jcsb {
-	justify-content: space-between;
+.jc-sb {
+	justify-content: space-between !important;
+}
+
+.f-wr {
+	flex-wrap: wrap !important;
 }
 
 .oblique {
-	position: absolute;
-	width: 100%;
-	height: 50vh;
-	top: 64%;
-	overflow-x: clip;
+	background: linear-gradient(176.5deg, #0078bc 0%, #a9ffc1 100%);
+	position: relative;
+	background-repeat: no-repeat;
+	background-size: 100% 95%;
+	overflow: hidden;
+	z-index: -1;
+	.row {
+		z-index: 2;
+		position: relative;
+	}
 	&:after {
 		content: '';
 		display: block;
-		background: linear-gradient(180deg, #0078bc 0%, #a9ffc1 100%);
-		transform: rotate(-3.5deg);
-		width: calc(100% + 100px);
-		height: 50vh;
-		left: -50px;
 		position: absolute;
-		z-index: -1;
+		border: transparent 100vw solid;
+		border-bottom: #fff 70px solid;
+		bottom: 4.96%;
+		z-index: 1;
+		@include media('max', 'xs') {
+			border-bottom: #fff 30px solid;
+		}
+	}
+	&:before {
+		content: '';
+		display: block;
+		position: absolute;
+		border: transparent 100vw solid;
+		border-top: #fff 70px solid;
+		top: -0.6px;
+		right: 0;
+		z-index: 1;
+		@include media('max', 'xs') {
+			border-top: #fff 30px solid;
+		}
 	}
 }
 
-.container {
-	max-width: 1600px;
-	margin: 0 auto;
+.page-text {
+	font-size: 16px;
+	max-width: 460px;
+}
+
+.container-fluid {
+	width: 100%;
 	.row {
 		display: flex;
 		width: 100%;
-		flex-wrap: wrap;
 		.col-6 {
 			width: 50%;
 			@include media('max', 'md') {
@@ -119,5 +226,30 @@ body {
 	}
 }
 
-@media (max-width: 800px) {
+.container {
+	max-width: 1600px;
+	margin: 0 auto;
+	@include media('max', 'xl') {
+		max-width: map.get($breakpoints, 'xl');
+	}
+	@include media('max', 'md') {
+		max-width: map.get($breakpoints, 'md');
+	}
+	@include media('max', 'xs') {
+		max-width: map.get($breakpoints, 'xs');
+	}
+	.row {
+		display: flex;
+		width: 100%;
+		.col-6 {
+			width: 50%;
+			@include media('max', 'md') {
+				width: 100%;
+			}
+		}
+		.col-12,
+		.col {
+			width: 100%;
+		}
+	}
 }
